@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Joke Buddy</h1>
+<p> Welcome to Joke Buddy!</p>
+<div id="list">
+    <div>
+        <h3>
+            To Begin:
+        </h3>
+    </div>
+    <ol class="list-group list-group-numbered">
+        <li class="list-group-item">Start by saying hello</li>
+        <li class="list-group-item">Type "I need a joke" to begin</li>
+        <li class="list-group-item">You can respond with "funny" or "not funny" or "lame"</li>
+        <li class="list-group-item">Type "exit" to leave</li>
+      </ol>
+</div>
+
+<div>
+    <div id="chatbot">
+        <p class="botText"><span>Hi there</span></p>
+    </div>
+
+
+    <div id="userInput">
+        <input type="text" id="textInput" name="userMessage" placeholder="Type your message..."/>
+        <input type="submit" value="Send" id="buttonInput"/>
+    </div>
+</div>  
+
+<script>
+    function getUserResponse(){
+        var userText = $('#textInput').val();
+        var userHTML = "<p class='userText'>User: <span>"+userText+"</span/></p>";
+         $('#textInput').val("");
+
+         $('#chatbot').append(userHTML);
+
+         //send text to front to back
+
+         $.get('/jokes/getResponse', {userMessage: userText}).done(function(data){
+            
+            var returnedMessage = "<p class='botText'>Chatbot: <span>"+ data +"</span/></p>";
+                $('#chatbot').append(returnedMessage);
+
+         })
+
+
+
+
+    }
+
+    $('#buttonInput').click(function(){
+        getUserResponse();
+    })
+</script>
+
+{% endblock %}
